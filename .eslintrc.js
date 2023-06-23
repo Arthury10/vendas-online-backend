@@ -1,26 +1,28 @@
 module.exports = {
   parser: '@typescript-eslint/parser',
   parserOptions: {
-    project: 'tsconfig.json',
-    tsconfigRootDir: __dirname,
-    sourceType: 'module',
+    ecmaFeatures: {
+      jsx: true
+    },
+    ecmaVersion: 11,
+    sourceType: 'module'
   },
-  plugins: ['@typescript-eslint/eslint-plugin'],
-  extends: [
-    'plugin:@typescript-eslint/recommended',
-    'plugin:prettier/recommended',
-  ],
-  root: true,
   env: {
+    browser: true,
+    es2020: true,
     node: true,
-    jest: true,
+    jest: true
   },
-  ignorePatterns: ['.eslintrc.js'],
+  extends: ['plugin:@typescript-eslint/recommended'],
+
+  plugins: [
+    '@typescript-eslint',
+    'prettier',
+    'simple-import-sort',
+    'unused-imports',
+    'import'
+  ],
   rules: {
-    '@typescript-eslint/interface-name-prefix': 'off',
-    '@typescript-eslint/explicit-function-return-type': 'off',
-    '@typescript-eslint/explicit-module-boundary-types': 'off',
-    '@typescript-eslint/no-explicit-any': 'off',
     'prettier/prettier': [
       'error',
       {
@@ -31,5 +33,49 @@ module.exports = {
         endOfLine: 'auto'
       }
     ],
+    'space-before-function-paren': [
+      'error',
+      {
+        anonymous: 'always',
+        named: 'never',
+        asyncArrow: 'always'
+      }
+    ],
+    'no-useless-constructor': ['off'],
+    'simple-import-sort/imports': [
+      'error',
+      {
+        groups: [
+          ['^\\u0000'],
+          ['^@nestjs(/.*|$)'],
+          ['^@generated(/.*|$)'],
+          ['^@\\w'],
+          ['^libs(/.*|$)'],
+          ['^react(/.*|$)'],
+          ['^\\.']
+        ]
+      }
+    ],
+    'unused-imports/no-unused-imports': 'warn',
+    'unused-imports/no-unused-vars': [
+      'warn',
+      {
+        vars: 'all',
+        varsIgnorePattern: '^_',
+        args: 'after-used',
+        argsIgnorePattern: '^_'
+      }
+    ],
+    'sort-imports': 'off',
+    'import/order': 'off',
+    '@typescript-eslint/no-explicit-any': ['off']
   },
-};
+  settings: {
+    'import/resolver': {
+      typescript: {}
+    },
+    react: {
+      version: 'detect'
+    }
+  }
+}
