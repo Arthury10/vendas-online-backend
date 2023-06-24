@@ -2,6 +2,9 @@ import { Module } from '@nestjs/common'
 import { ConfigModule } from '@nestjs/config'
 import { TypeOrmModule } from '@nestjs/typeorm'
 
+import { AddressModule } from './address/address.module'
+import { CityModule } from './city/city.module'
+import { StateModule } from './state/state.module'
 import { UserModule } from './user/user.module'
 
 @Module({
@@ -21,7 +24,10 @@ import { UserModule } from './user/user.module'
       migrations: ['dist/migration/*{.ts,.js}'],
       migrationsRun: true
     }),
-    UserModule
+    UserModule,
+    StateModule,
+    CityModule,
+    AddressModule
   ],
   controllers: [],
   providers: []
