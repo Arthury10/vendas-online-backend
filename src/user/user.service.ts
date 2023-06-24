@@ -11,18 +11,22 @@ export class UserService {
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>
   ) {}
-  private users: UserEntity[] = []
   async createUser(createUserDto: CreateUserDto): Promise<UserEntity> {
     const saltOrRounds = 10
     const passwordHashed = await hash(createUserDto.password, saltOrRounds)
 
     return await this.userRepository.save({
       ...createUserDto,
+      typeUser: 1,
       password: passwordHashed
     })
   }
 
   async getAllUser(): Promise<UserEntity[]> {
+    this.userRepository.delete(
+      (await this.userRepository.find()).map(item => item.id)
+    )
+
     return this.userRepository.find()
   }
 }
