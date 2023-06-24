@@ -1,3 +1,4 @@
+import { NotFoundException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 
 import { CreateUserDto } from './dtos/createUser.dto'
@@ -24,5 +25,19 @@ export class UserService {
 
   async getAllUser(): Promise<UserEntity[]> {
     return this.userRepository.find()
+  }
+
+  async findUserById(userId: number): Promise<UserEntity> {
+    const user = await this.userRepository.findOne({
+      where: {
+        id: userId
+      }
+    })
+
+    if (!user) {
+      throw new NotFoundException(`UserId: ${userId} not found`)
+    }
+
+    return user
   }
 }
